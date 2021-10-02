@@ -2,6 +2,6 @@
 
   Link para as notas de aula: https://github.com/luiz-classrooms/mc-lecture-notes
 
-  Dentre as questões ?? a ?? das notas de aula, escolha ?? e as resolva.
+  Dentre as questões 84 a 88 das notas de aula, escolha 5 e as resolva.
 
-  Implemente o algoritmo ??.
+  Implemente o algoritmo dos cortes de Gomory-Chvátal, que recebe como entrada um modelo de programação lienar inteira na forma padrão e, a cada iteração, enquanto a solução ótima não é inteira, acrescenta um desses cortes, preservando a forma padrão do modelo.
