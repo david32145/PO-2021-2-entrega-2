@@ -1,0 +1,187 @@
+\documentclass[]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{green}{rgb}{0,0.5,0}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+\numberwithin{equation}{section}
+
+%opening
+\title{Pesquisa Operacional}
+\author{Francisco David Nascimento Sousa}
+
+\begin{document}
+
+\section{Questão 84}
+
+O problema do 3-SAT consiste em uma conjução de cláusulas, ou seja, 3-SAT= $C_1 \wedge C_2 \wedge C_3 \wedge ... \wedge C_n$, e cada cláusula possui 3 literais, ou seja, $C_i = (l1 \vee l2 \vee l3)$, além disso cada literal pode ter o valor
+de $x_i$ ou $\overline{x_i}$, onde $x_i$ é uma das m váriveis lógicas do problema.
+
+O primeiro passo da "redução" é mapear cada variável lógica em uma variável inteira, usando 1 e 0 para representar verdadeiro e falso respectivamente. Ou seja, no modelo haverá uma variável inteira $z_i$ para cada variável lógica, com a seguinte restrição:
+
+\begin{align}
+     \forall{z_i}, 0 \leq z_i \leq 1
+\end{align}
+
+Com isso, é garantido que $z_i$ terá os valores de 0(falso) ou 1(verdadeiro).
+
+Outro ponto importante é que cada cláusula precisa ser verdadeira, no problema do modelo vamos transformar a disjunção em operações de soma, de modo que:
+
+\begin{align}
+   C_i = (x_1 \vee x_2 \vee x_3) = true \Leftrightarrow (z_1 + z_2 + z_3) \geq 1
+\end{align}
+
+Ou seja, para cada cláusula haverá essa restrição:
+
+\begin{align}
+     z_1 + z_2 + z_3 \geq 1 \\
+     z_4 + z_5 + z_6 \geq 1 \\
+     ... \\
+     z_{m-2} + z_{m-1} + z_m \geq 1
+\end{align}
+
+Além disso, existe o caso em que a variável lógica está negada, ou seja, $\overline{x}$, nesse caso queremo que quando x for verdadeiro $\overline{x}$ seja falso e vice-versa, para isso precisamo trocar cada ocorrência de $z_i$ em que $x_i$ era $\overline{x_i}$ por $1 - z_i$.
+
+Portanto, temos o seguinte modelo:
+
+\begin{align}
+&\quad f = (z_1 + z_2 + z_3) + (z_4 + z_5 + z_6) + ... + (z_{m-2} + z_{m-1} + z_m) \\
+\text{s.t}  &\quad  (z_1 + z_2 + z_3) \geq 1 \\
+            &\quad  (z_4 + z_5 + z_6) \geq 1 \\
+            &\quad  ... \\
+            &\quad  (z_{m-2} + z_{m-1} + z_m) \geq 1 \\
+            &\quad \forall{z_i}, 0 \leq z_i \leq 1
+\end{align}
+
+Claramente a ordem das variáveis não deve seguir essa ordem, mas foi mais para ilustrar. O importante é garantir que elas vão ser inteiras ou 0 ou 1, e que a cláusula é verdadeira com a restrição da soma ser pelo menos 1.
+
+Tal problema percetence a classe de problema NP Difíceis, pois foi possível "reduzir" o 3-SAT para esse problema de programação linear inteira em operações que levam tempo polinomial. Então se fosse possível resolver esse problema em tempo polinomial, o 3-SAT também seria, o que certamente não é possível.
+
+\section{Questão 85}
+
+Como $z$ está bem definido, então existe um $x_1$, onde $c^Tx_1 = z$, e como:
+
+\begin{align}
+     Ax_1 \leq b, \implies Ax_1 - b \leq 0
+\end{align}
+
+Como $u \geq 0$ e $Ax_1 - b \leq 0$,então $u^T(Ax_1 - b) \leq 0$, então
+$z = c^Tx_1 \leq c^Tx_1 - u^T(Ax_1 - b) = z(u)$.
+
+Logo, $z \leq z(u)$.
+
+\section{Questão 86}
+
+Temos os seguintes modelos:
+
+\begin{align}
+z =   \max        &\quad  c^Tx       \\
+      \text{s.t}  &\quad  Ax \leq b  \\
+                  &\quad  x \geq 0
+\end{align}
+
+\begin{align}
+z_{UB} =  \min        &\quad  u^Tb        \label{startDLP} \\
+          \text{s.t}  &\quad  A^Tu \geq c                  \\
+                      &\quad  u \geq 0    \label{endDLP}
+\end{align}
+
+Como $z$ está bem definido, então existe $x_1$, ondex $z = c^Tx_1$, e:
+
+\begin{align}
+     Ax_1 \leq b
+\end{align}
+
+Vamos multiplicar (3.7) por $u^T$, teremos:
+
+\begin{align}
+     u^TAx_1 \leq u^Tb
+\end{align}
+
+Como $z_{UB}$ também está bem definido, podemos dizer que $z_{UB} = u^Tb$, e:
+
+\begin{align}
+    A^Tu \geq c
+\end{align}
+
+Podemos transpor ambos os lados (3.9):
+
+\begin{align}
+    (A^Tu)^T \geq (cx_1)^T
+\end{align}
+
+Podemos multiplicar por $x_1$ (3.9):
+
+\begin{align}
+    (A^Tu)^Tx_1 \geq (cx_1)^Tx_1 \implies  u^TAx_1 \geq c^Tx_1
+\end{align}
+
+Assim temos:
+
+\begin{align}
+    z = c^Tx_1 \leq u^TAx_1 \leq u^Tb = z_{UB}
+\end{align}
+
+Logo, $z \leq z_{UB}$.
+
+\section{Questão 87}
+
+\begin{align}
+z_{UB} =    &\quad  u^Tu       \\
+\text{s.t}  &\quad  A^Tu \geq c  \\
+            &\quad  u \geq 0
+\end{align}
+
+Vamos chamar de $z$ a relaxação, dada por:
+
+\begin{align}
+z = &\quad  u^Tu - x(A^Tu - c)       \\
+\text{s.t}  &\quad  u \geq 0
+\end{align}
+
+Vamos fazer o mesmo processo que o outro, e vamos chamar de $z_{LB}$
+
+\begin{align}
+z_{LB} = \max z(x)       \\
+\text{s.t}  &\quad  u \geq 0
+\end{align}
+
+
+\begin{align}
+z_{LB} = \max_{x \geq 0} \min_{u \geq 0} \quad u^Tb - x(A^Tu - c)       \\
+z_{LB} = \max_{x \geq 0} \min_{u \geq 0} \quad u^Tb - xA^Tu + xc       \\
+\end{align}
+
+Vamos isolar os termos independentes:
+
+\begin{align}
+z_{LB} =  \max_{x \geq 0} &\quad  xc +
+          \left( \min_{u \geq 0} \quad u^Tb - xA^Tu \right)  \\
+z_{LB} =  \max_{x \geq 0} &\quad  xc +
+          \left( \min_{u \geq 0} \quad (b^T - Ax)u \right)  \\
+z_{LB} =  \max_{x \geq 0} &\quad  xc +
+          \left( \min_{u \geq 0} \quad (b - Ax)^Tu \right) \\
+z_{LB} =  \max_{x \geq 0} &\quad  c^Tx +
+          \left( \min_{u \geq 0} \quad (b - Ax)^Tu \right) 
+\end{align}
+
+Basta uma restrição de que $Ax \leq b$ e notar que $\min$ vai ser igual a 0, logo temos que:
+
+\begin{align}
+z_{LB} =    &\quad  c^Tx       \\
+\text{s.t}  &\quad  Ax \leq b  \\
+            &\quad  x \geq 0
+\end{align}
+
+Que basicamente é a equação incial, então o dual do dual é ele mesmo.
+
+\end{document}
